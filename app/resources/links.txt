@@ -1,0 +1,15 @@
+Google:
+fecha en español php
+
+https://mimentevuela.wordpress.com/2016/04/30/convertir-fechas-de-php-a-castellano/
+-----------------------------------------------------------------------
+
+
+Google:
+tablas de auditoria
+
+trigger para auditoria mysql
+
+http://www.forosdelweb.com/f86/necesito-triggers-para-auditar-672358/
+
+http://www.forosdelweb.com/f86/trigger-que-inserte-cuando-algo-ha-modificado-1110344/

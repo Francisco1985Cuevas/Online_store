@@ -1,0 +1,12 @@
+#Este archivo de configuracion(.htaccess), protege el directorio o carpeta:
+#Online_store/app para que no se pueda acceder a dicho directorio desde la
+#URL de un navegador.
+#Basicamente cuando un usuario ingresa en la url de su navegador:
+#http://localhost/Online_store/app e intenta ver el contenido de las carpetas,
+#este archivo protege y bloquea todo intento de acceso a dichos contenidos
+#o carpetas, para que no sea visible dentro del navegador
+Options -Indexes
+
+
+#Esta opcion seria lo opuesto, osea permite el acceso a directorios
+#Options +Indexes

@@ -1,0 +1,27 @@
+#Este archivo de configuracion(.htaccess), 
+#Cuando se inicia o se empieza a ejecutar toda la aplicacion lo primero que se
+#carga es este archivo de configuracion(.htaccess), la funcion que tiene este
+#archivo es la de "redireccionar" todo hacia la carpeta Online_store/public/
+
+#RewriteRule: es la regla de redireccion, nos ayuda a deshacernos de tener que 
+#escribir: Online_store/public/... directamente sobreEscribe todo sin la palabra public/
+#(.*) = todo
+#esto nos deberia permitir eliminar el acceso public, para que podamos ingresar
+#sin necesidad de escribir public/, para deshacernos del public. 
+#ejemplo: http://localhost/Online_store/articulo/actualizar/6,
+
+
+#Este archivo de configuracion(.htaccess), nos deberia permitir eliminar el acceso
+#public, para que podamos ingresar sin la necesidad de tener que escribir: public/
+#para deshacernos del public... 
+#RewriteRule: es la regla de redireccion... "redireccionar" todo hacia la 
+#carpeta: Online_store/public
+#(.*) = todo
+# al final quedaria como este ejemplo: http://localhost/Online_store/articulo/actualizar/6
+#En resumen elimina la palabra "public" de la url del navegador y 
+#redirecciona todo desde el acceso principal la carpeta raiz HACIA la carpeta Online_store/public
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+</IfModule>

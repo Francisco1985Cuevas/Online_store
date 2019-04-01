@@ -1,0 +1,23 @@
+#Este archivo de configuracion(Online_store\public\.htaccess), actua como un
+#"cargador" de archivos de la aplicacion o sitio web, sobreescribe la url
+#ingresada en el navegador, crea la variable "url" pasandole parametros...
+#si existe el archivo solicitado lo carga con todo el contenido PHP que tenga
+#sino redirecciona todo hacia el archivo index.php
+
+#Options -Multiviews: desactivar las multivistas.
+#RewriteEngine On: Nos permite hacer la reescritura de la url
+#RewriteBase /Online_store/public: en vez de Online_store debe ir el nombre del Online_store/public
+#RewriteCond %{REQUEST_FILENAME} !-d, RewriteCond %{REQUEST_FILENAME} !-f
+#Serian como unos condicionales en el proyecto, si existe el archivo(PHP o Javascript) 
+#el que sea que escribamos en la url lo carga sino redirecciona por medio de la regla
+#RewriteRule al index.php que esta en la carpeta public pasandole como parametro
+#la variable llamada url.
+
+<IfModule mod_rewrite.c>
+Options -Multiviews
+RewriteEngine On
+RewriteBase /Online_store/public
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
