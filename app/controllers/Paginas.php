@@ -9,11 +9,10 @@
             //llamamos al modelo usuario(clase) e instanciamos un objeto de esa clase
             //$this->usuarioModelo = $this->modelo('Usuario');
             
-            //Cargamos la vista
-            $this->vista('paginas/index');
+            
         }
         
-        //public function index(){  
+        public function index(){  
             //obtener los usuarios
             //$usuarios = $this->usuarioModelo->obtenerUsuarios();
             
@@ -23,7 +22,11 @@
 
             ////Cargamos la vista
             //$this->vista('paginas/index', $datos);
-        //}
+            
+            //Cargamos la vista
+            $this->vista('paginas/index');
+            
+        }
         
         //        public function agregar(){
         //            if($_SERVER['REQUEST_METHOD'] == 'POST'){

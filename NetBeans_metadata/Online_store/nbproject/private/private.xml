@@ -4,25 +4,35 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/create.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/librerias/app_functions.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Sidebar.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/ciudades/update.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/models/Ciudad.php</file>
             <file>file:/C:/wamp64/www/Online_store/public/index.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/librerias/Dbase.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/librerias/Core.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Breadcrumbs.php</file>
             <file>file:/C:/wamp64/www/Online_store/.htaccess</file>
             <file>file:/C:/wamp64/www/Online_store/app/iniciador.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Topbar.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/models/Pais.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/controllers/Paginas.php</file>
             <file>file:/C:/wamp64/www/Online_store/public/.htaccess</file>
-            <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/delete.php</file>
             <file>file:/C:/wamp64/www/Online_store/app/config/configurar.php</file>
-            <file>file:/C:/wamp64/www/Online_store/app/librerias/Controlador.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/copyright.php</file>
             <file>file:/C:/wamp64/www/Online_store/app/helpers/url_helper.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/footer.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/index.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/head.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Sidebar.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/librerias/Dbase.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/librerias/Core.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/ciudades/index.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Breadcrumbs.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/inc/Topbar.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/paginas/index.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/models/Pais.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/delete.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/ciudades/create.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/views/admin/ciudades/delete.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/librerias/Controlador.php</file>
+            <file>file:/C:/wamp64/www/Online_store/app/controllers/Ciudades.php</file>
             <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/update.php</file>
             <file>file:/C:/wamp64/www/Online_store/app/controllers/Paises.php</file>
             <file>file:/C:/wamp64/www/Online_store/app/.htaccess</file>
-            <file>file:/C:/wamp64/www/Online_store/app/views/admin/paises/index.php</file>
         </group>
     </open-files>
 </project-private>

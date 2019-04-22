@@ -2,7 +2,16 @@
     // Aqui programamos la funcionalidad del controlador
     class Ciudades extends Controlador{
         //Propiedades
-        //public $ciudadModelo;
+        public $ciudadModelo;
+        public $table = 'Ciudades';
+        public $action;
+        public $title;
+        
+        //Definicion de constantes
+        const LISTA = 'Lista de Ciudades';
+        const NVO = 'Nuevo Registro';
+        const UPD = 'Actualizar Registro';
+        const DEL = 'Borrar Registro';
         
         //Metodos
         public function __construct(){
@@ -11,125 +20,267 @@
         }
         
         public function index(){
-            //obtener todos los registros de ciudades para mostrar en el listado inicial de la pagina...
+            //$this->action = 'Listado de Ciudades';
+            $this->title = self::LISTA;
+            
+            //list Ciudades
             $ciudades = $this->ciudadModelo->obtenerCiudades();
             
+            // Se obtiene la ultima fecha de actualizacion o la fecha de insercion
+            // en la tabla de Ciudades
+            //$last_ciudad_updated_tmp = $this->ciudadModelo->get_last_updated_ciudad();
+            //if(!empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+            //    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['UPDATED']);
+            //}else{
+            //    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['CREATED']);
+            //}
+            
+            $last_ciudad_updated_tmp = $this->ciudadModelo->get_last_updated_ciudad();
+            if(empty($last_ciudad_updated_tmp[0]['CREATED']) && empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+                $last_ciudad_updated = '';
+            }elseif(!empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+                $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['UPDATED']);
+            }else{
+                $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['CREATED']);
+            }
+            
+            
             //cargamos el array $datos
-            $datos = ['ciudades' => $ciudades];
+            $datos = ['table' => $this->table,
+                        //'action' => $this->action,
+                        'title' => $this->title,
+                        'search' => false,
+                        'ciudades' => $ciudades,
+                        'last_ciudad_updated' => $last_ciudad_updated];
             
             //Cargamos la vista
-            $this->vista('admin/ciudades/inicio', $datos);
+            $this->vista('admin/ciudades/index', $datos);
         }
         
-        public function agregar(){
-            //
+        public function search(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-               $datos = ['nombre' => trim($_POST['nombre']),
-                            'pais' => trim($_POST['pais']),
-                            'abreviatura' => trim($_POST['abreviatura'])
-                        ];
+                //$this->action = 'Listado de Ciudades';
+                $this->title = self::LISTA;
                 
-                if($this->ciudadModelo->agregarCiudad($datos)){
-                    redireccionar('/admin/ciudades');  //esta funcion esta en el archivo url_helper
+                //obtener la ciudad buscada por nombre
+                $ciudad_search = $this->ciudadModelo->obtenerCiudadNombre($_POST['search_nombre_ciudad']);
+                
+                //list Ciudades
+                $ciudades = $this->ciudadModelo->obtenerCiudades();
+            
+                // Se obtiene la ultima fecha de actualizacion o la fecha de insercion
+                // en la tabla de Ciudades
+                //$last_ciudad_updated_tmp = $this->ciudadModelo->get_last_updated_ciudad();
+                //if(!empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+                //    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['UPDATED']);
+                //}else{
+                //    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['CREATED']);
+                //}
+                $last_ciudad_updated_tmp = $this->ciudadModelo->get_last_updated_ciudad();
+                if(empty($last_ciudad_updated_tmp[0]['CREATED']) && empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+                    $last_ciudad_updated = '';
+                }elseif(!empty($last_ciudad_updated_tmp[0]['UPDATED'])){
+                    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['UPDATED']);
                 }else{
-                    //die('Algo salió mal');
-                    echo "<br>".$this->ciudadModelo->ciudad_err_msg;
-                    die("");
+                    $last_ciudad_updated = fechaCastellano($last_ciudad_updated_tmp[0]['CREATED']);
                 }
-            }else{
-                //obtener los paises para usar en el list del form de ciudades
-                $paises = $this->ciudadModelo->obtenerPaises();
-                
-                $datos = ['nombre' => '', 'pais' => '', 'abreviatura' => '', 'paises' => $paises];
-                $this->vista('admin/ciudades/agregar', $datos);
+            
+                //cargamos el array $datos
+                $datos = ['table' => $this->table,
+                            //'action' => $this->action,
+                            'title' => $this->title,
+                            'search' => true,
+                            'ciudad_search' => $ciudad_search, 
+                            'ciudades' => $ciudades,
+                            'last_ciudad_updated' => $last_ciudad_updated];
+            
+                //Cargamos la vista
+                $this->vista('admin/ciudades/index', $datos);
             }
         }
         
         
-        public function editar($id){
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        public function create(){
+            //$this->action = 'Nuevo Registro';
+            $this->title = self::NVO;
+            
+            //obtener los paises para usar en el list del form de ciudades
+            $paises = $this->ciudadModelo->obtenerPaises();
+    
+            $datos = ['table' => $this->table,
+                        //'action' => $this->action,
+                        'title' => $this->title,
+                        'message' => '',
+                        'paises' => $paises
+                    ];
+            
+            $this->vista('admin/ciudades/create', $datos);
+        }
+        
+        
+        public function store(){
+            //$this->action = 'Nuevo Registro';
+            $this->title = self::NVO;
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $datos = ['crt_nombre_ciudad' => $_POST['crt_nombre_ciudad'],
+                            'crt_abreviatura_ciudad' => $_POST['crt_abreviatura_ciudad'],
+                            'crt_pais_ciudad' => $_POST['crt_pais_ciudad']
+                        ];
+                
+                $message = $this->ciudadModelo->agregarCiudad($datos);
+                
+                //vaciar el array $datos para volver a usarlo...
+                foreach ($datos as $key => $value) {
+                    unset($datos[$key]);
+                }
+                
+                $datos = ['table' => $this->table,
+                            //'action' => $this->action,
+                            'title' => $this->title,
+                            'message' => $message];
+                
+                $this->vista('admin/paises/create', $datos);
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        public function edit($id){
+            //$this->action = 'Actualizar Registro';
+            $this->title = self::UPD;
+            
+            //cuando se hace clic en el "enlace" editar/parametro... de la lista
+            //obtener informacion de la ciudad desde el modelo
+            $ciudad = $this->ciudadModelo->obtenerCiudadId($id);
+            
+            //obtener los paises para usar en el list del form de ciudades
+            $paises = $this->ciudadModelo->obtenerPaises();
+            
+            foreach($ciudad as $k => $v){
+                $datos = ['table' => $this->table,
+                            //'action' => $this->action,
+                            'title' => $this->title,
+                            'message' => '',
+                            'ciudad' => $v['CIUDAD'],
+                            'updt_nombre_ciudad' => $v['NOMBRE'],
+                            'updt_abreviatura_ciudad' => $v['ABREVIATURA'],
+                            'updt_pais_ciudad' => $v['PAIS'],
+                            'paises' => $paises];
+            }
+            
+            //Cargamos la vista ciudades/update
+            $this->vista('admin/ciudades/update', $datos);
+        }
+        
+        
+        public function update($id){
+            //$this->action = 'Actualizar Registro';
+            $this->title = self::UPD;
+            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //si se ha recibido por post los sgtes datos...
                 //cuando se hace clic en el boton enviar del form...
                 $datos = ['ciudad' => $id,
-                            'pais' => trim($_POST['pais']),
-                            'nombre' => trim($_POST['nombre']),
-                            'abreviatura' => trim($_POST['abreviatura'])
+                            'updt_nombre_ciudad' => $_POST['updt_nombre_ciudad'],
+                            'updt_abreviatura_ciudad' => $_POST['updt_abreviatura_ciudad'],
+                            'updt_pais_ciudad' => $_POST['updt_pais_ciudad']
                         ];
                 
-                if($this->ciudadModelo->actualizarCiudad($datos)){
-                    redireccionar('/admin/ciudades');
-                }else {
-                    die('Algo salió mal');
-                }
-            }else{
-                //cuando se hace clic en el "enlace" editar/parametro... de la lista
-                //obtener informacion de la ciudad desde el modelo
+                $message = $this->ciudadModelo->actualizarCiudad($datos);
                 
+                //vaciar el array $datos para volver a usarlo...
+                //foreach ($datos as $key => $value) {
+                //    unset($datos[$key]);
+                //}
+                
+                //obtener informacion de la ciudad desde el modelo
+                $ciudad = $this->ciudadModelo->obtenerCiudadId($id);
+            
                 //obtener los paises para usar en el list del form de ciudades
                 $paises = $this->ciudadModelo->obtenerPaises();
-                
-                $ciudad = $this->ciudadModelo->obtenerCiudadId($id);
-                
-                //echo "id_ciudad: ".$id;
-                //echo "<br>paises<br>";
-                //print_r($paises);
-                //echo "<br>ciudad<br>";
-                //print_r($ciudad);
-                //echo "<br>id: ".$ciudad[0]['CIUDAD'];
-                //die("");
-                
+            
                 foreach($ciudad as $k => $v){
-                    $datos = ['paises' => $paises,
+                    $datos = ['table' => $this->table,
+                                //'action' => $this->action,
+                                'title' => $this->title,
+                                'message' => $message,
                                 'ciudad' => $v['CIUDAD'],
-                                'nombre' => $v['NOMBRE'],
-                                'abreviatura' => $v['ABREVIATURA'],
-                                'pais' => $v['PAIS']
+                                'updt_nombre_ciudad' => $v['NOMBRE'],
+                                'updt_abreviatura_ciudad' => $v['ABREVIATURA'],
+                                'updt_pais_ciudad' => $v['PAIS'],
+                                'paises' => $paises
                             ];
                 }
-                //print_r($datos);
-                
-                //Cargamos la vista ciudades/editar
-                $this->vista('admin/ciudades/editar', $datos);                
+                $this->vista('admin/ciudades/update', $datos);
             }
         }
         
+        
         public function borrar($id){
-            //obtener informacion de la ciudad desde el modelo
-            //$usuario = $this->usuarioModelo->obtenerUsuarioId($id);
-            //$datos = ['id_usuario' => $usuario->id_usuario, 'nombre' => $usuario->nombre, 'email' => $usuario->email, 'telefono' => $usuario->telefono];
+            //$this->action = 'Borrar Registro';
+            $this->title = self::DEL;
+            
+            //obtener los paises para usar en el list del form de ciudades
+            $paises = $this->ciudadModelo->obtenerPaises();
             
             //cuando se hace clic en el "enlace" borrar/parametro... de la lista
-            //obtener informacion de pais desde el modelo
+            //obtener informacion de la ciudad desde el modelo
             $ciudad = $this->ciudadModelo->obtenerCiudadId($id);
-            
             foreach($ciudad as $k => $v){
-                $datos = ['ciudad' => $v['CIUDAD'],
-                            'nombre' => $v['NOMBRE'],
-                            'abreviatura' => $v['ABREVIATURA'],
-                            'pais' => $v['PAIS']
-                        ];
-            }
-            
-               
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                $datos = ['ciudad' => $id];
-                
-                if($this->ciudadModelo->borrarCiudad($datos)){
-                    redireccionar('/admin/ciudades');
-                }else {
-                    //die('Algo salió mal');
-                    echo "<br>".$this->ciudadModelo->ciudad_err_msg;
-                    die("");
-                }
+                $datos = ['table' => $this->table,
+                            //'action' => $this->action,
+                            'title' => $this->title,
+                            'message' => '',
+                            'ciudad' => $v['CIUDAD'],
+                            'del_nombre_ciudad' => $v['NOMBRE'],
+                            'del_abreviatura_ciudad' => $v['ABREVIATURA'],
+                            'del_pais_ciudad' => $v['PAIS'],
+                            'paises' => $paises];
             }
             
             //invoca a la vista borrar
-            $this->vista('admin/ciudades/borrar', $datos);
-            
+            $this->vista('admin/ciudades/delete', $datos);
         }
         
-        
-        
+        public function delete($id){
+            //$this->action = 'Borrar Registro';
+            $this->title = self::DEL;
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $datos = ['ciudad' => $id];
+                
+                $message = $this->ciudadModelo->borrarCiudad($datos);
+
+                //vaciar el array $datos para volver a usarlo...
+                foreach ($datos as $key => $value) {
+                    unset($datos[$key]);
+                }
+                
+                $datos = ['table' => $this->table,
+                            //'action' => $this->action,
+                            'title' => $this->title,
+                            'message' => $message
+                    ];
+               
+                //invoca a la vista borrar
+                $this->vista('admin/paises/delete', $datos);
+            }
+        }
         
     }
     

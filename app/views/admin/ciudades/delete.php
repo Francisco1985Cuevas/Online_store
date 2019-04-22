@@ -1,5 +1,5 @@
 <?php 
-    //delete Paises
+    //delete Ciudades
     require HEAD;
 ?>
 <body id="page-top">
@@ -24,7 +24,7 @@
                     <?php
                         require BREADCRUMBS;
                     ?>
-                    <!-- Form Pais -->
+                    <!-- Form Ciudad -->
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card shadow mb-4">
@@ -80,26 +80,36 @@
                                                     <?php 
                                                 }
                                             ?>
-                                            <form role="form" id="form_deletePais" action="<?php echo RUTA_URL; ?>/paises/delete/<?php echo $datos['pais']; ?>" method="POST">    
+                                            <form role="form" id="form_deleteCiudad" action="<?php echo RUTA_URL; ?>/ciudades/delete/<?php echo $datos['ciudad']; ?>" method="POST">    
                                                 <div class="form-group">
-                                                    <label>Nombre</label>
-                                                    <input class="form-control" id="del_nombre_pais" name="del_nombre_pais" type="text" placeholder="Por favor, Ingrese Nombre del Pais..." value="<?php echo $datos['del_nombre_pais']; ?>" autofocus required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Nacionalidad</label>
-                                                    <input class="form-control" id="del_nacionalidad_pais" name="del_nacionalidad_pais" type="text" placeholder="Ingrese Nacionalidad..." value="<?php echo $datos['del_nacionalidad_pais']; ?>" >
+                                                    <label>Nombre(Ciudad/Localidad)</label>
+                                                    <input class="form-control" id="del_nombre_ciudad" name="del_nombre_ciudad" type="text" placeholder="Por favor, Ingrese el nombre de la Ciudad(Obligatorio)" value="<?php echo $datos['del_nombre_ciudad']; ?>" autofocus required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Abreviatura</label>
-                                                    <input class="form-control" id="del_abreviatura_pais" name="del_abreviatura_pais" type="text" placeholder="Ingrese abreviatura..." maxlength="3" value="<?php echo $datos['del_abreviatura_pais']; ?>" >
+                                                    <input class="form-control" id="del_abreviatura_ciudad" name="del_abreviatura_ciudad" type="text" placeholder="Ingrese abreviatura" maxlength="3" value="<?php echo $datos['del_abreviatura_ciudad']; ?>" >
                                                     <p class="help-block">M&aacute;ximo de Tres(3) Caracteres.</p>
                                                 </div>
-                                                <button id="btn_deletePais" type="button" class="btn btn-danger btn-icon-split">
+                                                <div class="form-group">
+                                                    <label for="del_pais_ciudad">Pais</label>
+                                                    <select class="form-control" id="del_pais_ciudad" name="del_pais_ciudad">
+                                                        <?php
+                                                            foreach($datos['paises'] as $k => $v){
+                                                                if($datos['del_pais_ciudad'] == $v['pais'] ){
+                                                                    echo "<option value='$v[pais]' selected >$v[nombre]</option>";
+                                                                }else{
+                                                                    echo "<option value='$v[pais]'>$v[nombre]</option>";
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <button id="btn_deleteCiudad" type="button" class="btn btn-danger btn-icon-split">
                                                     <span class="text">Eliminar</span>
                                                 </button>
                                             </form>
                                             <br>
-                                            <img id="loading-del-pais" src="<?php echo IMAGES; ?>/ajax-loader.gif" />
+                                            <img id="loading-del-ciudad" src="<?php echo IMAGES; ?>/ajax-loader.gif" />
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                     </div>
@@ -127,17 +137,17 @@
 <?php 
     require FOOTER;
 ?>
-<script> 
-    $(document).ready(function() {
+<script>
+    $(document).ready(function(){
         //Al iniciar el formulario, ocultar el <img loading> 
-		$('#loading-del-pais').hide();
+		$('#loading-del-ciudad').hide();
         
-        // validacion del evento: onclick() del form de crear pais
-		$("#btn_deletePais").on("click", function(){
-			//Mostrar el loading de espera mientras dure el proceso de espera
-            $('#loading-del-pais').show();
+        // validacion del evento: onclick() del form de delete ciudad
+		$("#btn_deleteCiudad").on("click", function(){
+			//Mostrar el loading de espera mientras dure el proceso
+            $('#loading-del-ciudad').show();
             
-            $("#form_deletePais").submit();
+            $("#form_deleteCiudad").submit();
         });
     });
 </script>

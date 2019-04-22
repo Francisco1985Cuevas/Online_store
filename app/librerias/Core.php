@@ -21,8 +21,8 @@
     class Core{
         
         //propiedades
-        //protected $controladorActual = 'paginas';
-        protected $controladorActual = 'paises'; //ORIGINAL
+        protected $controladorActual = 'paginas';
+        //protected $controladorActual = 'paises'; //ORIGINAL
         //protected $controladorActual = 'ciudades';
         
         protected $metodoActual = 'index';
@@ -73,6 +73,7 @@
             }
             
             //requerir el controlador
+            
             require_once '../app/controllers/'.$this->controladorActual.'.php';
             $this->controladorActual = new $this->controladorActual;
             
@@ -90,7 +91,7 @@
             }
         
             //para probar traer metodo
-            //echo $this->metodoActual;
+            //echo "<br>metodoActual: ".$this->metodoActual;
             
             
             

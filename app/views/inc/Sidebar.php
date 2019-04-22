@@ -1,5 +1,3 @@
-<!--<li><a href="<?php echo RUTA_URL; ?>"><i class="fa fa-dashboard fa-fw"></i> Panel de Administracion</a></li>-->
-
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
@@ -80,6 +78,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Login Screens:</h6>
                 <a class="collapse-item" href="<?php echo RUTA_URL."/paises/index"; ?>">Paises</a>
+                <a class="collapse-item" href="<?php echo RUTA_URL."/ciudades/index"; ?>">Ciudades</a>
                 <a class="collapse-item" href="login.html">Login</a>
                 <a class="collapse-item" href="register.html">Register</a>
                 <a class="collapse-item" href="forgot-password.html">Forgot Password</a>

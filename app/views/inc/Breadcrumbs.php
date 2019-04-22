@@ -8,7 +8,8 @@
     <?php
         if(!empty($datos['table'])){
             echo '<li class="breadcrumb-item ">'.$datos['table'].'</li>';
-            echo '<li class="breadcrumb-item active">'.$datos['action'].'</li>';
+            //echo '<li class="breadcrumb-item active">'.$datos['action'].'</li>';
+            echo '<li class="breadcrumb-item active">'.$datos['title'].'</li>';
         }
     ?>
 </ol>

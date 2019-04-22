@@ -141,22 +141,22 @@
             print_r("<b>INFORMATION:</b><br/>".$this->con->getAttribute(PDO::ATTR_SERVER_INFO));
             echo "</span>";
         }
-
+        
         //Retrieve all drivers capables
         public function drivers(){
             print_r(PDO::getAvailableDrivers()); 
         }
-
+        
         //Execute the transactional operations
         public function transaction($arg){
             $this->err_msg = "";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
-                    if($arg=="B"){
+                    if($arg == "B"){
                         $this->con->beginTransaction();
-                    }elseif($arg=="C"){
+                    }elseif($arg == "C"){
                         $this->con->commit();
-                    }elseif($arg=="R"){
+                    }elseif($arg == "R"){
                         $this->con->rollBack();
                     }else{
                         $this->err_msg = "Error: The passed param is wrong! just allow [B=begin, C=commit or R=rollback]";
@@ -171,31 +171,31 @@
                 return false;
             }
         }
-
+        
         //Evaluate query statement
         private function evalStatement($query){
             $query = strtolower(trim($query));
             $instruction = substr($query,0,9);
-            if($instruction=='delimiter') return 'delimiter';
+            if($instruction == 'delimiter') return 'delimiter';
             $instruction = substr($query,0,6);
-            if($instruction=='delete') return 'delete';
-            if($instruction=='insert') return 'insert';
-            if($instruction=='update') return 'update';
-            if($instruction=='create') return 'create';
+            if($instruction == 'delete') return 'delete';
+            if($instruction == 'insert') return 'insert';
+            if($instruction == 'update') return 'update';
+            if($instruction == 'create') return 'create';
             $instruction = substr($query,0,5);
-            if($instruction=='alter') return 'alter';
+            if($instruction == 'alter') return 'alter';
             $instruction = substr($query,0,4);
-            if($instruction=='exec') return 'exec';
-            if($instruction=='call') return 'call';
-            if($instruction=='drop') return 'drop';
+            if($instruction == 'exec') return 'exec';
+            if($instruction == 'call') return 'call';
+            if($instruction == 'drop') return 'drop';
             return '';
         }
-
+        
         //Return total records from query as integer
         public function rowcount(){
             return $this->count;
         }
-
+        
         //Iterate over rows
         public function query($sql_statement, $type = 'array', $arg = ''){
             //$transactionable = false;
@@ -238,7 +238,7 @@
                             $sth = $this->con->prepare($this->sql);
                             //$this->con->beginTransaction();
 
-                            if((isset($arguments[0]) && gettype($arguments[0])!=='array') || gettype($arguments)=='array'){
+                            if((isset($arguments[0]) && gettype($arguments[0]) !== 'array') || gettype($arguments) == 'array'){
                                 $sth->execute($arguments);
                             }else{
                                 $total_elements = count($arguments);
@@ -295,19 +295,19 @@
                 return false;
             }
         }
-
+        
         //Querys Anti SQL Injections
-        public function query_secure($sql_statement, $params, $fetch_rows=false, $unnamed=false, $delimiter="|"){
+        public function query_secure($sql_statement, $params, $fetch_rows = false, $unnamed = false, $delimiter = "|"){
             $this->err_msg = "";
             if(!isset($unnamed)) $unnamed = false;
-            if(trim((string)$delimiter)==""){
+            if(trim((string)$delimiter) == ""){
                 $this->err_msg = "Error: Delimiter are required.";
                 return false;
             }
-            if($this->con!=null){
+            if($this->con != null){
                 $obj = $this->con->prepare($sql_statement);
                 if(!$unnamed){
-                    for($i=0;$i<count($params);$i++){
+                    for($i = 0; $i < count($params); $i++){
                         $params_split = explode($delimiter,$params[$i]);
                         (trim($params_split[2])=="INT") ? $obj->bindParam($params_split[0], $params_split[1], PDO::PARAM_INT) : $obj->bindParam($params_split[0], $params_split[1], PDO::PARAM_STR);
                     }
@@ -335,7 +335,7 @@
                 return false;
             }
         }
-
+        
         //Fetch the first row
         public function query_first($sql_statement){
             $this->err_msg = "";
@@ -358,7 +358,7 @@
         //Select single table cell from first record
         public function query_single($sql_statement){
             $this->err_msg = "";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
                     $sttmnt = $this->con->prepare($sql_statement);
                     $sttmnt->execute();
@@ -377,11 +377,11 @@
         public function columns($table){
             $this->err_msg = "";
             $this->sql="SELECT * FROM $table";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
                     $q = $this->con->query($this->sql);
                     $column = array();
-                    foreach($q->fetch(PDO::FETCH_ASSOC) as $key=>$val){
+                    foreach($q->fetch(PDO::FETCH_ASSOC) as $key => $val){
                         $column[] = $key;
                     }
                     return $column;
@@ -423,11 +423,11 @@
         }
 
         //Update tables
-        public function update($table, $data, $condition=""){
+        public function update($table, $data, $condition = ""){
             $this->err_msg = "";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
-                    return (trim($condition)!="") ? $this->con->exec("UPDATE ".$table." SET ".$data." WHERE ".$condition.";") : $this->con->exec("UPDATE ".$table." SET ".$data.";");
+                    return (trim($condition) != "") ? $this->con->exec("UPDATE ".$table." SET ".$data." WHERE ".$condition.";") : $this->con->exec("UPDATE ".$table." SET ".$data.";");
                 }catch(PDOException $e){
                     $this->err_msg = "Error: ". $e->getMessage();
                     return false;
@@ -439,13 +439,13 @@
         }
 
         //Delete records from tables
-        public function delete($table, $condition=""){
+        public function delete($table, $condition = ""){
             //echo "table: ".$table." condition: ".$condition;
             //die("");
             $this->err_msg = "";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
-                    return (trim($condition)!="") ? $this->con->exec("DELETE FROM ".$table." WHERE ".$condition.";") : $this->con->exec("DELETE FROM ".$table.";");
+                    return (trim($condition) != "") ? $this->con->exec("DELETE FROM ".$table." WHERE ".$condition.";") : $this->con->exec("DELETE FROM ".$table.";");
                 }catch(PDOException $e){
                     $this->err_msg = "Error: ". $e->getMessage();
                     return false;
@@ -459,7 +459,7 @@
         //Execute Store Procedures
         public function execute($sp_query){
             $this->err_msg = "";
-            if($this->con!=null){
+            if($this->con != null){
                 try{
                     $this->con->exec($sp_query);
                     return true;
@@ -474,7 +474,7 @@
         }
 
         //Get latest specified id from specified table
-        public function getLatestId($db_table, $table_field=''){
+        public function getLatestId($db_table, $table_field = ''){
             $this->err_msg = "";
             $sql_statement = "";
             $dbtype = $this->database_type;
@@ -491,7 +491,7 @@
                 $sql_statement = "SELECT ".$table_field." FROM ".$db_table." ORDER BY ".$table_field." DESC LIMIT 1 OFFSET 0;";
             }
 
-            if($this->con!=null){
+            if($this->con != null){
                 try{
                     return $this->query_single($sql_statement);
                 }catch(PDOException $e){
@@ -526,7 +526,7 @@
                 $sql_statement = "SELECT relname AS name FROM pg_stat_user_tables ORDER BY relname;";
             }
 
-            if($this->con!=null){
+            if($this->con != null){
                 try{
                     $this->sql=$sql_statement;
                     $sth = $this->con->prepare($this->sql);
@@ -580,7 +580,7 @@
         //Get the latest error ocurred in the connection
         public function getError(){
             //return trim($this->err_msg)!= "" ? $this->err_msg : "";
-            return trim($this->err_msg)!= "" ? "<center><h1>Error de Conexión</h1></center><br>La conexión con su servidor de base de datos ha fallado.<br> El servidor da este mensaje: <b>".$this->err_msg."</b> <ul><li>¿Esta en funcionamiento el servidor de base de datos?</li><li>¿Existe la base de datos y el usuario tiene suficientes privilegios para crear una base de datos?</li><li>¿Ha escrito el nombre de la base de datos correctamente?</li><li>¿Ha escrito el nombre de usuario y contraseña correctamente?</li><li>¿Ha escrito el nombre del servidor de la base de datos correctamente?</li></ul>" : "";
+            return trim($this->err_msg) != "" ? "<center><h1>Error de Conexión</h1></center><br>La conexión con su servidor de base de datos ha fallado.<br> El servidor da este mensaje: <b>".$this->err_msg."</b> <ul><li>¿Esta en funcionamiento el servidor de base de datos?</li><li>¿Existe la base de datos y el usuario tiene suficientes privilegios para crear una base de datos?</li><li>¿Ha escrito el nombre de la base de datos correctamente?</li><li>¿Ha escrito el nombre de usuario y contraseña correctamente?</li><li>¿Ha escrito el nombre del servidor de la base de datos correctamente?</li></ul>" : "";
         }
 
         //Disconnect database

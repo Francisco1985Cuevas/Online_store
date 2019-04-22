@@ -1,5 +1,5 @@
 <?php
-    //update Paises
+    //update Ciudades
     require HEAD;
     //print_r($datos);
 ?>
@@ -25,7 +25,7 @@
                     <?php
                         require BREADCRUMBS;
                     ?>
-                    <!-- Form Pais -->
+                    <!-- Form Ciudad -->
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card shadow mb-8">
@@ -41,13 +41,13 @@
                                                         if($value == "0"){
                                                             ?>
                                                             <div class="alert alert-success">
-                                                                <i class="fas fa-check-circle"></i> Se ha actualizado el registro Exitosamente!
+                                                                Se ha actualizado el registro Exitosamente!
                                                             </div>
                                                             <?php 
                                                         }else{
                                                            ?>
                                                             <div class="alert alert-danger">
-                                                                <i class="fas fa-exclamation-circle"></i>º <?php echo $value; ?>
+                                                                <?php echo $value; ?>
                                                             </div>
                                                             <?php  
                                                         }
@@ -72,31 +72,41 @@
                                                     }
                                                 }
                                             ?>
-                                            <form role="form" id="form_updatePais" action="<?php echo RUTA_URL; ?>/paises/update/<?php echo $datos['pais']; ?>" method="POST">
+                                            <form role="form" id="form_updateCiudad" action="<?php echo RUTA_URL; ?>/ciudades/update/<?php echo $datos['ciudad']; ?>" method="POST">
                                                 <div class="form-group">
-                                                    <label>Nombre</label>
-                                                    <input class="form-control" id="updt_nombre_pais" name="updt_nombre_pais" type="text" placeholder="Por favor, ingrese el nombre del Pais(Obligatorio)" value="<?php echo $datos['updt_nombre_pais']; ?>" autofocus required>
-                                                    <p id="error_updt_nombre_pais" class="text-danger" >El campo Nombre es Obligatorio</p>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Nacionalidad</label>
-                                                    <input class="form-control" id="updt_nacionalidad_pais" name="updt_nacionalidad_pais" type="text" placeholder="Ingrese nacionalidad" value="<?php echo $datos['updt_nacionalidad_pais']; ?>" >
+                                                    <label>Nombre(Ciudad/Localidad)</label>
+                                                    <input class="form-control" id="updt_nombre_ciudad" name="updt_nombre_ciudad" type="text" placeholder="Por favor, Ingrese el nombre de la Ciudad(Obligatorio)" value="<?php echo $datos['updt_nombre_ciudad']; ?>" autofocus required>
+                                                    <p id="error_updt_nombre_ciudad" class="text-danger" >El campo Nombre es Obligatorio</p>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Abreviatura</label>
-                                                    <input class="form-control" id="updt_abreviatura_pais" name="updt_abreviatura_pais" type="text" placeholder="Ingrese abreviatura" maxlength="3" value="<?php echo $datos['updt_abreviatura_pais']; ?>" >
-                                                    <p id="error_updt_abreviatura_pais" class="text-danger" >El campo Abreviatura debe ser de m&aacute;ximo Tres(3) Caract&eacute;res</p>
-                                                    <p class="help-block">Debe escribir hasta un m&aacute;ximo de tres(3) Caract&eacute;res.</p>
+                                                    <input class="form-control" id="updt_abreviatura_ciudad" name="updt_abreviatura_ciudad" type="text" placeholder="Ingrese abreviatura" maxlength="3" value="<?php echo $datos['updt_abreviatura_ciudad']; ?>" >
+                                                    <p id="error_updt_abreviatura_ciudad" class="text-danger" >El campo Abreviatura debe ser de m&aacute;ximo Tres(3) Caract&eacute;res</p>
+                                                    <p class="help-block">M&aacute;ximo de Tres(3) Caracteres.</p>
                                                 </div>
-                                                <input id="updt_id_pais" name="updt_id_pais" type="hidden" value="<?php echo $datos['pais']; ?>">
-                                                <button id="btn_updatePais" type="button" class="btn btn-primary btn-icon-split">
+                                                <div class="form-group">
+                                                    <label for="updt_pais_ciudad">Pais</label>
+                                                    <select class="form-control" id="updt_pais_ciudad" name="updt_pais_ciudad">
+                                                        <?php
+                                                            foreach($datos['paises'] as $k => $v){
+                                                                if($datos['updt_pais_ciudad'] == $v['pais'] ){
+                                                                    echo "<option value='$v[pais]' selected >$v[nombre]</option>";
+                                                                }else{
+                                                                    echo "<option value='$v[pais]'>$v[nombre]</option>";
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <input id="updt_id_ciudad" name="updt_id_ciudad" type="hidden" value="<?php echo $datos['ciudad']; ?>">
+                                                <button id="btn_updateCiudad" type="button" class="btn btn-primary btn-icon-split">
                                                    <span class="text">Guardar</span>
                                                 </button>
                                             </form>
                                             <br>
-                                            <img id="loading-updt-pais" src="<?php echo IMAGES; ?>/ajax-loader.gif" />
+                                            <img id="loading-updt-ciudad" src="<?php echo IMAGES; ?>/ajax-loader.gif" />
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,51 +131,52 @@
     require FOOTER;
 ?>
 <script>
+    
     // Scripts validacion por ajax para el form de agregar categorias
 	$(document).ready(function(){
-		//Al iniciar el formulario, ocultar el lodading de espera y el parrafo error
-		$('#loading-updt-pais').hide();
-		$('#error_updt_nombre_pais').hide();
-        $('#error_updt_abreviatura_pais').hide();
+		//Al iniciar el formulario, ocultar el lodading de espera..
+		$('#loading-updt-ciudad').hide();
+		$('#error_updt_nombre_ciudad').hide();
+        $('#error_updt_abreviatura_ciudad').hide();
         
-		// validacion del evento: onclick() del form de update pais
-		$("#btn_updatePais").on("click", function(){
-			var updt_nombre_pais;
-            var updt_abreviatura_pais;
-            
+		// validacion del evento: onclick() del form update Ciudades
+		$("#btn_updateCiudad").on("click", function(){
             //Mostrar el lodading de espera mientras dure el proceso de insert
-            $('#loading-updt-pais').show();
+            $('#loading-updt-ciudad').show();
         
 			// El usuario hizo click en el boton guardar...
-			updt_nombre_pais = $("#updt_nombre_pais").val();
-            updt_nombre_pais = $.trim(updt_nombre_pais); //sacar espacios en blanco
-            updt_abreviatura_pais = $("#updt_abreviatura_pais").val();
-            //alert("nombre: "+updt_nombre_pais);
+            var updt_nombre_ciudad;
+            var updt_abreviatura_ciudad;
+			
+            updt_nombre_ciudad = $("#updt_nombre_ciudad").val();
+            updt_nombre_ciudad = $.trim(updt_nombre_ciudad); //sacar espacios en blanco
+            updt_abreviatura_ciudad = $("#updt_abreviatura_ciudad").val();
+            //alert("nombre: "+updt_nombre_ciudad);
             
-            /*if(updt_nombre_pais === '' || updt_nombre_pais === null){
-                $('#updt_nombre_pais').css('border','1px solid #d9534f');
-                $('#error_updt_nombre_pais').show();
-                
+            /*if(updt_nombre_ciudad === '' || updt_nombre_ciudad === null){
+                $('#updt_nombre_ciudad').css('border','1px solid #d9534f');
+                $('#error_updt_nombre_ciudad').show();
                 //alert("El campo Nombre es Obligatorio");
-                $('#updt_nombre_pais').val(""); //limpiar el input
-				$("#updt_nombre_pais").focus(); //fijar nuevamente el focus sobre el input            
-                $('#loading-updt-pais').hide();
+                $('#updt_nombre_ciudad').val(""); //limpiar el input
+				$("#updt_nombre_ciudad").focus(); //fijar nuevamente el focus sobre el input
+                $('#loading-updt-ciudad').hide();
             }else{
-                $("#form_updatePais").submit();
+                $("#form_updateCiudad").submit();
             }*/
-            if(updt_nombre_pais === '' || updt_nombre_pais === null){
+            //HAY QUE RECORRER EL FORM PARA MOSTRAR LOS ERRORES
+            if(updt_nombre_ciudad === '' || updt_nombre_ciudad === null){
                 //alert("El campo Nombre es Obligatorio");
-                $('#updt_nombre_pais').css('border','1px solid #d9534f');
-                $('#error_updt_nombre_pais').show();
+                $('#updt_nombre_ciudad').css('border','1px solid #d9534f');
+                $('#error_updt_nombre_ciudad').show();
                 
-                $('#updt_nombre_pais').val(""); //limpiar el input
-				$("#updt_nombre_pais").focus(); //fijar nuevamente el focus sobre el input
-                $('#loading-updt-pais').hide();
-            }else if(updt_abreviatura_pais.length > 3){
-                $('#updt_abreviatura_pais').css('border','1px solid #d9534f');
-                $('#error_updt_abreviatura_pais').show();
+                $('#updt_nombre_ciudad').val(""); //limpiar el input
+				$("#updt_nombre_ciudad").focus(); //fijar nuevamente el focus sobre el input
+                $('#loading-updt-ciudad').hide();
+            }else if(updt_abreviatura_ciudad.length > 3){
+                $('#updt_abreviatura_ciudad').css('border','1px solid #d9534f');
+                $('#error_updt_abreviatura_ciudad').show();
             }else{
-                $("#form_updatePais").submit();
+                $("#form_updateCiudad").submit();
             }
         });
 	});

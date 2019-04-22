@@ -14,8 +14,6 @@
         require_once 'librerias/'.$nombreClase.'.php';
     });
     
-    require_once 'librerias/app_functions.php';
-    
     
     //$var = new Dbase;
     //$dbCN = $this->db->Cnxn(); //This step is really neccesary for create connection to database, and getting the errors in methods.

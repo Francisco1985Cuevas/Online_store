@@ -1,12 +1,5 @@
 <?php
     //Configuracion de acceso a la base de datos
-    /*
-    define('DB_HOST', 'localhost');
-    define('DB_USUARIO', 'root');
-    define('DB_PASSWORD', '');
-    define('DB_NOMBRE', 'crud_mvc2');
-    */
-    
     define('DB_SERVER', '127.0.0.1');
     define('DB_USER', 'root');
     define('DB_PASS', '');
@@ -36,5 +29,4 @@
     define('TOPBAR', VIEWS . '/inc/Topbar.php');
     define('BREADCRUMBS', VIEWS . '/inc/Breadcrumbs.php');
     define('COPYRIGHT', VIEWS . '/inc/copyright.php');
-    
     define('IMAGES', RUTA_URL . '/public/images');
